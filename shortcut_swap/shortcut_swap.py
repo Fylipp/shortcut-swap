@@ -24,7 +24,7 @@ class ShortcutSwap:
         
         pass
 
-    def revert(self, root):
+    def revert(self, root, verbose=False):
         pass
 
 
