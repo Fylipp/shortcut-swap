@@ -6,8 +6,5 @@ from ss_revert import revert
 from fire.core import Fire
 
 
-def main():
-    Fire()
-
 if __name__ == '__main__':
-    main()
+    Fire()
