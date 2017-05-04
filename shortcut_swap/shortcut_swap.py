@@ -6,12 +6,8 @@ from fire.core import Fire
 
 
 class ShortcutSwap:
-    def swap(self, root, link, backup=True, depth_limit=12, verbose=False):
-        if not backup:
-            if not assert_backup_disabled():
-                return
-
-        dump = RevertDump() if backup else None
+    def swap(self, root, link, depth_limit=12, verbose=False):
+        dump = RevertDump()
         
         counter = itertree(root, depth_limit, verbose, dump)
         
@@ -50,17 +46,6 @@ def itertree(path, depth_limit, verbose, bk, depth=1):
         
     return counter
 
-    
-def assert_backup_disabled():
-    log("The backup feature has been disabled, this can cause permanent damage which may be fatal to the system!")
-    sure = input("Are you sure you want to proceed [y/N]: ").strip().lower()
-    if sure == 'y':
-        log("Continuing with the backup feature disabled.")
-        return True
-    else:
-        log("Operation aborted.")
-        return False
-        
 
 def log(line, end='\n'):
     sys.stdout.write(line if (end == '') else (line + end))
