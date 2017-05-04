@@ -6,22 +6,21 @@ from fire.core import Fire
 
 
 class ShortcutSwap:
-    def swap(self, root, link, backup=True, depth_limit=12, silent=False, verbose=False):
+    def swap(self, root, link, backup=True, depth_limit=12, verbose=False):
         if not backup:
             if not assert_backup_disabled():
                 return
 
         dump = RevertDump() if backup else None
         
-        counter = itertree(root, depth_limit, silent, verbose, dump)
+        counter = itertree(root, depth_limit, verbose, dump)
         
-        if not silent:
-            if counter is 0:
-                log("No files affected.")
-            elif counter is 1:
-                log("1 file affected.")
-            else:
-                log(str(counter) + " files affected.")
+        if counter is 0:
+            log("No files affected.")
+        elif counter is 1:
+            log("1 file affected.")
+        else:
+            log(str(counter) + " files affected.")
         
         pass
 
@@ -33,7 +32,7 @@ def do_swap(file, bk):
     pass
     
     
-def itertree(path, depth_limit, silent, verbose, bk, depth=1):
+def itertree(path, depth_limit, verbose, bk, depth=1):
     counter = 0
     
     for root, dirs, files in os.walk(path):
@@ -47,7 +46,7 @@ def itertree(path, depth_limit, silent, verbose, bk, depth=1):
         
         if depth < depth_limit:
             for dir in dirs:
-                counter += itertree(dir, depth_limit, silent, verbose, depth + 1)
+                counter += itertree(dir, depth_limit, verbose, depth + 1)
         
     return counter
 
