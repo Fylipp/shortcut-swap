@@ -5,9 +5,28 @@ import pickle
 from fire.core import Fire
 
 
+BACKUP_FILE = 'shortcut_swap.bk'
+
+
 class ShortcutSwap:
     def swap(self, root, link, depth_limit=12, verbose=False):
+        if not os.path.exists(root):
+            log("The provided path does not exist")
+            return
+
         dump = RevertDump()
+
+        bkPath = os.path.join(root, BACKUP_FILE)
+
+        if os.path.exists(bkPath):
+            log("The path for the backup file already exists: " + bkPath)
+            return
+
+        try:
+            bkFile = open(bkPath, 'w')
+        except e:
+            log("Failed to open backup path for writing: " + bkPath)
+            return
         
         counter = itertree(root, depth_limit, verbose, dump)
         
@@ -17,16 +36,23 @@ class ShortcutSwap:
             log("1 file affected.")
         else:
             log(str(counter) + " files affected.")
-        
-        pass
 
+        pickle.dump(dump, bkFile)
+
+        try:
+            bkFile.close()
+        except:
+            pass
+
+        log("Backup is located at " + bkPath)
+    
     def revert(self, root, verbose=False):
         pass
 
 
 def do_swap(file, bk):
     pass
-    
+
     
 def itertree(path, depth_limit, verbose, bk, depth=1):
     counter = 0
