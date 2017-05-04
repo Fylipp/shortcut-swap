@@ -13,7 +13,7 @@ Optional:
 - depth_limit: The maximum hierarchy depth, defaults to 12
 - verbose: Whether the hierarchy progression should be logged (increases time it takes to execute by a lot), defaults to `False`
 
-## Reverting
+### Reverting
 `python -m shortcut_swap revert <root> [verbose]`
 
 Required:
