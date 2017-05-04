@@ -1,4 +1,4 @@
-# shortcut-swap
+# shortcut-swap (WIP)
 Swap all shortcuts in any given folder hierarchy with a custom shortcut. Can be reversed.
 
 ## Usage
