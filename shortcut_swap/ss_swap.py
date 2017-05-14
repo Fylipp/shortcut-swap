@@ -11,7 +11,7 @@ def swap(root, link, depth_limit=12, verbose=False):
             log("The provided path does not exist")
             return
 
-        dump = RevertDump()
+        dump = RevertDump(depth_limit)
 
         bkPath = os.path.join(root, BACKUP_FILE)
 

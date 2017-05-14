@@ -11,5 +11,6 @@ def log(line, end='\n'):
 
 
 class RevertDump:
-    def __init__(self):
+    def __init__(self, depth_limit):
+        self.depth_limit = depth_limit
         self.backup = dict()
