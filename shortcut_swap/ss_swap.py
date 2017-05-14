@@ -6,12 +6,12 @@ import os
 import pickle
 
 
-def swap(root, link, depth_limit=12, verbose=False):
+def swap(root, link, depth_limit=2, verbose=False):
         if not os.path.exists(root):
             log("The provided path does not exist")
             return
 
-        dump = RevertDump(depth_limit)
+        dump = RevertDump()
 
         bkPath = os.path.join(root, BACKUP_FILE)
 
@@ -25,8 +25,10 @@ def swap(root, link, depth_limit=12, verbose=False):
             log("Failed to open backup path for writing: " + bkPath)
             return
         
-        counter = itertree(root, depth_limit, verbose, dump)
+        counter = itertree(root, link, depth_limit, verbose, dump)
         
+        log("")
+
         if counter is 0:
             log("No files affected.")
         elif counter is 1:
@@ -44,24 +46,31 @@ def swap(root, link, depth_limit=12, verbose=False):
         log("Backup is located at " + bkPath)
 
 
-def do_swap(file, bk):
-    pass
+def do_swap(file, new_target, bk):
+    old = get_shortcut_info(file)
+    bk.backup[file] = old
+    set_shortcut_info(file, ShortcutInfo(new_target), os.path.join(old.working_directory, old.target_path))
 
     
-def itertree(path, depth_limit, verbose, bk, depth=1):
+def itertree(path, new_target, depth_limit, verbose, bk):
     counter = 0
+    depth = 0
     
     for root, dirs, files in os.walk(path):
         if verbose: log("--- " + root + " ---")
+
+        depth += 1
         
         for f in files:
             if f.endswith('.lnk'):
-                do_swap(f, bk)
-                counter += 1
                 if verbose: log(f)
-        
-        if depth < depth_limit:
-            for dir in dirs:
-                counter += itertree(dir, depth_limit, verbose, depth + 1)
-        
+                try:
+                    do_swap(f, new_target, bk)
+                    counter += 1
+                except Exception as e:
+                    log("Failed to swap " + path + " with the following error: " + e.message)
+
+        if depth >= depth_limit:
+            break
+    
     return counter

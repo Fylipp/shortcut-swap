@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from ss_commmon import *
+from ss_common import *
 
 import os
 import pickle
@@ -30,8 +30,14 @@ def revert(root, verbose=False):
     except:
         pass
 
-    for shortcut_location, original_target in bk:
-        do_revert(shortcut_location, original_target)
+    for shortcut_location, original_info in bk.backup:
+        if verbose: log(shortcut_location)
+        try:
+            set_shortcut_info(shortcut_location, original_info)
+        except:
+            log("Failed to restore " + shortcut_location)
+
+    log("")
 
     try:
         os.remove(bkPath)
@@ -39,26 +45,3 @@ def revert(root, verbose=False):
         log("Error whilst deleting backup file")
 
     log("Restored state from " + bkPath)
-
-
-def do_revert(shortcut_location, original_target):
-    pass
-
-
-def itertree(path, depth_limit, verbose, bk, depth=1):
-    counter = 0
-    
-    for root, dirs, files in os.walk(path):
-        if verbose: log("--- " + root + " ---")
-        
-        for f in files:
-            if f.endswith('.lnk'):
-                do_revert(f, bk)
-                counter += 1
-                if verbose: log(f)
-        
-        if depth < depth_limit:
-            for dir in dirs:
-                counter += itertree(dir, depth_limit, verbose, depth + 1)
-        
-    return counter
