@@ -30,6 +30,9 @@ def revert(root, verbose=False):
     except:
         pass
 
+    for shortcut_location, original_target in bk:
+        do_revert(shortcut_location, original_target)
+
     try:
         os.remove(bkPath)
     except:
@@ -38,7 +41,7 @@ def revert(root, verbose=False):
     log("Restored state from " + bkPath)
 
 
-def do_revert(file, bk):
+def do_revert(shortcut_location, original_target):
     pass
 
 
