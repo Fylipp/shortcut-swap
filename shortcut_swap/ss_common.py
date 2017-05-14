@@ -11,6 +11,5 @@ def log(line, end='\n'):
 
 
 class RevertDump:
-    def __init__(self, format_version=1):
-        self.format_version = format_version
+    def __init__(self):
         self.backup = dict()
