@@ -4,8 +4,7 @@ using ShortcutSwap.Command;
 namespace ShortcutSwap {
     class Program {
 
-        public const string VERB_SWAP = "swap";
-        public const string VERB_REVERT = "revert";
+        public const string RevertFile = "shortcut-swap.bk";
 
         static int Main(string[] args) {
             var cmd = new CommandSet("shortcut-swap") {
