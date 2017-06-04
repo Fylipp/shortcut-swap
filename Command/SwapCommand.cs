@@ -72,7 +72,7 @@ namespace ShortcutSwap.Command {
 
                 return 0;
             } catch (Exception e) {
-                Console.Error.WriteLine($"[ERROR] {e.Message}");
+                Console.Error.WriteLine($"[ERROR] {e}");
                 return 1;
             }
         }
@@ -95,7 +95,7 @@ namespace ShortcutSwap.Command {
 
                 return true;
             } catch (Exception e) {
-                Console.WriteLine($"[FAIL] {filepath}{Environment.NewLine}       {e.Message}");
+                Console.WriteLine($"[FAIL] {filepath}\n{e}");
                 return false;
             }
         }
