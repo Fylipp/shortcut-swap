@@ -15,9 +15,9 @@ namespace ShortcutSwap.Command {
 
         public RevertCommand() : base("revert", "Revert a swap") {
             Options = new OptionSet {
-                { "help", "Shows help", h => ShowHelp = true, true },
+                { "help|h|?", "Shows help", h => ShowHelp = true, true },
                 { "verbose|v", "Logs all progress", v => Verbose = true },
-                { "root=", "The root of the folder hierarchy at which the program should start", r => Root = r },
+                { "root|r=", "The root of the folder hierarchy at which the program should start", r => Root = r },
             };
         }
 

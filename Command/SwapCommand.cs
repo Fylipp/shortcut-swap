@@ -20,7 +20,7 @@ namespace ShortcutSwap.Command {
         public SwapCommand() : base("swap", "Perform a swap") {
             Options = new OptionSet {
                 { "link|l=", "The custom shortcut to change all .lnk-files to", l => Link = l },
-                { "help|h", "Shows help", h => ShowHelp = true, true },
+                { "help|h|?", "Shows help", h => ShowHelp = true, true },
                 { "verbose|v", "Logs all progress", v => Verbose = true },
                 { "root|r=", "The root of the folder hierarchy at which the program should start", r => Root = r },
                 { "depth-limit|d=", "The maximum hierarchy depth", (int d) => DepthLimit = d }
