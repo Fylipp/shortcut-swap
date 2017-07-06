@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shortcut-swap", "shortcut-swap.csproj", "{B31182E2-4B1E-4841-A76A-A3C797BE1430}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fylipp.ShortcutSwap.Main", "src\Fylipp.ShortcutSwap.Main\Fylipp.ShortcutSwap.Main.csproj", "{B31182E2-4B1E-4841-A76A-A3C797BE1430}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
