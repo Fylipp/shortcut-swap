@@ -1,10 +1,9 @@
-﻿using Mono.Options;
-using Newtonsoft.Json;
-using System;
+﻿using Fylipp.ShortcutSwap.Core;
+using Mono.Options;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ShortcutSwap.Command {
+namespace Fylipp.ShortcutSwap.Main.Command {
     class SwapCommand : Mono.Options.Command {
 
         public string Link { get; private set; }
@@ -17,7 +16,13 @@ namespace ShortcutSwap.Command {
 
         public int DepthLimit { get; private set; } = 2;
 
-        public SwapCommand() : base("swap", "Perform a swap") {
+        private readonly ISwapper swapper;
+        private readonly ILog log;
+
+        public SwapCommand(ISwapper swapper, ILog log) : base("swap", "Perform a swap") {
+            this.swapper = swapper;
+            this.log = log;
+
             Options = new OptionSet {
                 { "link|l=", "The custom shortcut to change all .lnk-files to", l => Link = l },
                 { "help|h|?", "Shows help", h => ShowHelp = true, true },
@@ -28,89 +33,13 @@ namespace ShortcutSwap.Command {
         }
 
         public override int Invoke(IEnumerable<string> arguments) {
-            try {
-                Options.Parse(arguments);
+            Options.Parse(arguments);
 
-                if (ShowHelp) {
-                    Options.WriteOptionDescriptions(CommandSet.Out);
-                } else {
-                    if (string.IsNullOrWhiteSpace(Link)) {
-                        Console.Error.WriteLine("Non-whitespace link is mandatory.");
-                        return 1;
-                    }
-
-                    var rfPath = Path.Combine(Root, Program.RevertFile);
-
-                    if (File.Exists(rfPath)) {
-                        Console.Error.WriteLine("The path for revert information already exists. Revert before swapping again.");
-                        return 1;
-                    }
-
-                    var rfStream = new StreamWriter(new FileStream(rfPath, FileMode.Create));
-                    var revertInfo = new Dictionary<string, string>();
-
-                    var shell = new IWshRuntimeLibrary.WshShell();
-
-                    int success = 0;
-                    int total = 0;
-
-                    Walk(Root, 0, filename => {
-                        if (Swap(filename, revertInfo, shell)) {
-                            success++;
-                        }
-
-                        total++;
-                    });
-
-                    rfStream.Write(JsonConvert.SerializeObject(revertInfo));
-                    rfStream.Close();
-
-                    File.SetAttributes(rfPath, File.GetAttributes(rfPath) | FileAttributes.Hidden);
-
-                    Console.WriteLine($"Swapped {success} of {total} shortcuts.");
-                }
-
+            if (ShowHelp) {
+                Options.WriteOptionDescriptions(CommandSet.Out);
                 return 0;
-            } catch (Exception e) {
-                Console.Error.WriteLine($"[ERROR] {e}");
-                return 1;
-            }
-        }
-
-        bool Swap(string filepath, IDictionary<string, string> revertInfo, IWshRuntimeLibrary.WshShell shell) {
-            try {
-                var link = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(filepath);
-
-                var oldTarget = link.TargetPath;
-
-                link.TargetPath = Link;
-                link.IconLocation = oldTarget;
-                link.Save();
-
-                revertInfo.Add(filepath, oldTarget);
-
-                if (Verbose) {
-                    Console.WriteLine($"[SWAP] {filepath}");
-                }
-
-                return true;
-            } catch (Exception e) {
-                Console.WriteLine($"[FAIL] {filepath}\n{e}");
-                return false;
-            }
-        }
-
-        void Walk(string directory, int currentDepth, Action<string> processor) {
-            if (currentDepth >= DepthLimit) {
-                return;
-            }
-
-            foreach (string shortcutFile in Directory.GetFiles(directory, "*.lnk")) {
-                processor(shortcutFile);
-            }
-
-            foreach (string subDirectory in Directory.GetDirectories(directory)) {
-                Walk(subDirectory, currentDepth + 1, processor);
+            } else {
+                return swapper.Swap(new SwapArgs(Root, Link, DepthLimit, Verbose), log) ? 0 : 1;
             }
         }
 

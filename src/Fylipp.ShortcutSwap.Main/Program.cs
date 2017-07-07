@@ -1,15 +1,19 @@
 ﻿using Mono.Options;
-using ShortcutSwap.Command;
+using Fylipp.ShortcutSwap.Core;
+using Fylipp.ShortcutSwap.Main.Command;
 
-namespace ShortcutSwap {
+namespace Fylipp.ShortcutSwap.Main {
     class Program {
 
-        public const string RevertFile = "shortcut-swap.bk";
-
         static int Main(string[] args) {
+            ILog log = new ConsoleLog();
+
+            ISwapper swapper = new DefaultSwapper();
+            IReverter reverter = new DefaultReverter();
+
             var cmd = new CommandSet("shortcut-swap") {
-                new SwapCommand(),
-                new RevertCommand()
+                new SwapCommand(swapper, log),
+                new RevertCommand(reverter, log)
             };
 
             return cmd.Run(args);
