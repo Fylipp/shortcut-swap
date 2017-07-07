@@ -18,10 +18,12 @@ namespace Fylipp.ShortcutSwap.Main.Command {
 
         private readonly ISwapper swapper;
         private readonly ILog log;
+        private readonly IIO io;
 
-        public SwapCommand(ISwapper swapper, ILog log) : base("swap", "Perform a swap") {
+        public SwapCommand(ISwapper swapper, IIO io, ILog log) : base("swap", "Perform a swap") {
             this.swapper = swapper;
             this.log = log;
+            this.io = io;
 
             Options = new OptionSet {
                 { "link|l=", "The custom shortcut to change all .lnk-files to", l => Link = l },
@@ -39,7 +41,7 @@ namespace Fylipp.ShortcutSwap.Main.Command {
                 Options.WriteOptionDescriptions(CommandSet.Out);
                 return 0;
             } else {
-                return swapper.Swap(new SwapArgs(Root, Link, DepthLimit, Verbose), log) ? 0 : 1;
+                return swapper.Swap(new SwapArgs(Root, Link, DepthLimit, Verbose), io, log) ? 0 : 1;
             }
         }
 

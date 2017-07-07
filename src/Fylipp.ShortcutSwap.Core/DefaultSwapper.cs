@@ -6,7 +6,7 @@ using System.IO;
 namespace Fylipp.ShortcutSwap.Core {
     public class DefaultSwapper : ISwapper {
 
-        public bool Swap(SwapArgs args, ILog log) {
+        public bool Swap(SwapArgs args, IIO io, ILog log) {
             try {
                 if (string.IsNullOrWhiteSpace(args.Destination)) {
                     log.Log("The provided new shortcut destination is empty", true);
@@ -15,7 +15,7 @@ namespace Fylipp.ShortcutSwap.Core {
 
                 var revertFile = Path.Combine(args.RootPath, Constants.RevertFile);
 
-                if (File.Exists(revertFile)) {
+                if (io.FileExists(revertFile)) {
                     log.Log("The selected root has unreverted changes", true);
                     return false;
                 }
@@ -24,26 +24,24 @@ namespace Fylipp.ShortcutSwap.Core {
                     log.Log($"Revert-file: {revertFile}");
                 }
 
-                var revertOutput = new StreamWriter(new FileStream(revertFile, FileMode.Create));
+                var revertOutput = io.WriteTo(revertFile);
                 var revertInfo = new Dictionary<string, string>();
-
-                var shell = new IWshRuntimeLibrary.WshShell();
-
+                
                 int success = 0;
                 int total = 0;
 
                 Walk(args.RootPath, args.DepthLimit, 0, filename => {
-                    if (SwapFile(filename, args.Destination, args.Verbose, revertInfo, shell, log)) {
+                    if (SwapFile(filename, args.Destination, args.Verbose, revertInfo, io, log)) {
                         success++;
                     }
 
                     total++;
-                });
+                }, io);
 
                 revertOutput.Write(JsonConvert.SerializeObject(revertInfo));
                 revertOutput.Close();
 
-                File.SetAttributes(revertFile, File.GetAttributes(revertFile) | FileAttributes.Hidden);
+                io.HideFile(revertFile);
 
                 log.Log($"Swapped {success} of {total} shortcuts");
 
@@ -55,20 +53,12 @@ namespace Fylipp.ShortcutSwap.Core {
             }
         }
 
-        private static bool SwapFile(string filepath, string destination, bool verbose, IDictionary<string, string> revertInfo, IWshRuntimeLibrary.WshShell shell, ILog log) {
+        private static bool SwapFile(string filepath, string destination, bool verbose, IDictionary<string, string> revertInfo, IIO io, ILog log) {
             try {
-                var link = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(filepath);
-
-                var oldTarget = link.TargetPath;
-
-                link.TargetPath = destination;
-                link.IconLocation = oldTarget;
-                link.Save();
-
-                revertInfo.Add(filepath, oldTarget);
+                revertInfo.Add(filepath, io.SwapShortcutPath(filepath, destination, true));
 
                 if (verbose) {
-                    log.Log($"Swapping {filepath}");
+                    log.Log($"Swapped {filepath}");
                 }
 
                 return true;
@@ -79,17 +69,17 @@ namespace Fylipp.ShortcutSwap.Core {
             }
         }
 
-        private static void Walk(string directory, int depthLimit, int currentDepth, Action<string> processor) {
+        private static void Walk(string directory, int depthLimit, int currentDepth, Action<string> processor, IIO io) {
             if (currentDepth >= depthLimit) {
                 return;
             }
 
-            foreach (string shortcutFile in Directory.GetFiles(directory, "*.lnk")) {
+            foreach (string shortcutFile in io.GetFilesInDirectory(directory, "*.lnk")) {
                 processor(shortcutFile);
             }
 
-            foreach (string subDirectory in Directory.GetDirectories(directory)) {
-                Walk(subDirectory, depthLimit, currentDepth + 1, processor);
+            foreach (string subDirectory in io.GetDirectoriesInDirectory(directory)) {
+                Walk(subDirectory, depthLimit, currentDepth + 1, processor, io);
             }
         }
 

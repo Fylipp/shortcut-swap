@@ -48,8 +48,10 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="ConsoleLog.cs" />
+    <Compile Include="DefaultIO.cs" />
     <Compile Include="DefaultReverter.cs" />
     <Compile Include="DefaultSwapper.cs" />
+    <Compile Include="IIO.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="IReverter.cs" />
     <Compile Include="ISwapper.cs" />

@@ -6,28 +6,26 @@ using System.IO;
 namespace Fylipp.ShortcutSwap.Core {
     public class DefaultReverter : IReverter {
 
-        public bool Revert(RevertArgs args, ILog log) {
+        public bool Revert(RevertArgs args, IIO io, ILog log) {
             try {
-                var revertPath = Path.Combine(args.RootPath, Constants.RevertFile);
-                var revertInfo = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(revertPath));
-
-                var shell = new IWshRuntimeLibrary.WshShell();
+                var revertFile = Path.Combine(args.RootPath, Constants.RevertFile);
+                var revertInfo = JsonConvert.DeserializeObject<Dictionary<string, string>>(io.ReadEntireFile(revertFile));
 
                 var failed = new Dictionary<string, string>();
 
                 foreach (var pair in revertInfo) {
-                    if (!RevertFile(pair.Key, pair.Value, args.Verbose, shell, log)) {
+                    if (!RevertFile(pair.Key, pair.Value, args.Verbose, io, log)) {
                         failed.Add(pair.Key, pair.Value);
                     }
                 }
 
                 if (failed.Count == 0) {
                     log.Log($"Successfully reverted {revertInfo.Count} shortcuts, backup will be removed");
-                    File.Delete(revertPath);
+                    io.DeleteFile(revertFile);
                     return true;
                 } else {
                     log.Log($"Failed to revert {failed.Count} of {revertInfo.Count} shortcuts, backup will be updated", true);
-                    File.WriteAllText(revertPath, JsonConvert.SerializeObject(failed));
+                    io.WriteAll(revertFile, JsonConvert.SerializeObject(failed));
                 }
 
                 return false;
@@ -38,12 +36,9 @@ namespace Fylipp.ShortcutSwap.Core {
             }
         }
 
-        private static bool RevertFile(string filepath, string oldTarget, bool verbose, IWshRuntimeLibrary.WshShell shell, ILog log) {
+        private static bool RevertFile(string filepath, string oldTarget, bool verbose, IIO io, ILog log) {
             try {
-                var link = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(filepath);
-
-                link.TargetPath = oldTarget;
-                link.Save();
+                io.SwapShortcutPath(filepath, oldTarget, false);
 
                 if (verbose) {
                     log.Log($"Reverting {filepath}");

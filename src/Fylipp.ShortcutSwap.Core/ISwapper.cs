@@ -5,9 +5,10 @@
         /// Performs a swap operation.
         /// </summary>
         /// <param name="args">The arguments for the swap operation.</param>
+        /// <param name="io">The I/O implementation.</param>
         /// <param name="log">The log output for the operation.</param>
         /// <returns>Whether the operation was successful.</returns>
-        bool Swap(SwapArgs args, ILog log);
+        bool Swap(SwapArgs args, IIO io, ILog log);
 
     }
 
