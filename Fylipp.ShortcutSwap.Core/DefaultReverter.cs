@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Fylipp.ShortcutSwap.Core {
     public class DefaultReverter : IReverter {
@@ -11,13 +12,9 @@ namespace Fylipp.ShortcutSwap.Core {
                 var revertFile = Path.Combine(args.RootPath, Constants.RevertFile);
                 var revertInfo = JsonConvert.DeserializeObject<Dictionary<string, string>>(io.ReadEntireFile(revertFile));
 
-                var failed = new Dictionary<string, string>();
-
-                foreach (var pair in revertInfo) {
-                    if (!RevertFile(pair.Key, pair.Value, args.Verbose, io, log)) {
-                        failed.Add(pair.Key, pair.Value);
-                    }
-                }
+                var failed = revertInfo
+                    .Where(pair => !RevertFile(pair.Key, pair.Value, args.Verbose, io, log))
+                    .ToDictionary(pair => pair.Key, pair => pair.Value);
 
                 if (failed.Count == 0) {
                     log.Log($"Successfully reverted {revertInfo.Count} shortcuts, backup will be removed");

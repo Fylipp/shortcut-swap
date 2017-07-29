@@ -4,6 +4,7 @@ namespace Fylipp.ShortcutSwap.Core {
     /// <summary>
     /// Defines all I/O operations.
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public interface IIO {
 
         /// <summary>

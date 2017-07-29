@@ -3,9 +3,9 @@ using Fylipp.ShortcutSwap.Core;
 using Fylipp.ShortcutSwap.Main.Command;
 
 namespace Fylipp.ShortcutSwap.Main {
-    class Program {
-
-        static int Main(string[] args) {
+    internal class Program {
+        
+        private static int Main(string[] args) {
             IIO io = new DefaultIO();
             ILog log = new ConsoleLog();
 

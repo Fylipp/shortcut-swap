@@ -27,8 +27,8 @@ namespace Fylipp.ShortcutSwap.Core {
                 var revertOutput = io.WriteTo(revertFile);
                 var revertInfo = new Dictionary<string, string>();
                 
-                int success = 0;
-                int total = 0;
+                var success = 0;
+                var total = 0;
 
                 Walk(args.RootPath, args.DepthLimit, 0, filename => {
                     if (SwapFile(filename, args.Destination, args.Verbose, revertInfo, io, log)) {
@@ -74,11 +74,11 @@ namespace Fylipp.ShortcutSwap.Core {
                 return;
             }
 
-            foreach (string shortcutFile in io.GetFilesInDirectory(directory, "*.lnk")) {
+            foreach (var shortcutFile in io.GetFilesInDirectory(directory, "*.lnk")) {
                 processor(shortcutFile);
             }
 
-            foreach (string subDirectory in io.GetDirectoriesInDirectory(directory)) {
+            foreach (var subDirectory in io.GetDirectoriesInDirectory(directory)) {
                 Walk(subDirectory, depthLimit, currentDepth + 1, processor, io);
             }
         }

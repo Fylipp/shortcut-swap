@@ -1,6 +1,7 @@
 ﻿using System.IO;
 
 namespace Fylipp.ShortcutSwap.Core {
+    // ReSharper disable once InconsistentNaming
     public class DefaultIO : IIO {
 
         private IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
