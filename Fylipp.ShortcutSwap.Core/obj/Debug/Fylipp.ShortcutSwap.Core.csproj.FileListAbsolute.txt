@@ -1,0 +1,9 @@
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Core\obj\Debug\Fylipp.ShortcutSwap.Core.csprojResolveAssemblyReference.cache
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Core\obj\Debug\Interop.IWshRuntimeLibrary.dll
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Core\obj\Debug\Fylipp.ShortcutSwap.Core.csproj.ResolveComReference.cache
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Core\bin\Debug\Fylipp.ShortcutSwap.Core.dll
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Core\bin\Debug\Fylipp.ShortcutSwap.Core.pdb
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Core\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Core\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Core\obj\Debug\Fylipp.ShortcutSwap.Core.dll
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Core\obj\Debug\Fylipp.ShortcutSwap.Core.pdb

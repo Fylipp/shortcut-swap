@@ -1,0 +1,12 @@
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\obj\Debug\Fylipp.ShortcutSwap.Main.csprojResolveAssemblyReference.cache
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\bin\Debug\Costura.dll
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\bin\Debug\Fylipp.ShortcutSwap.Core.dll
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\bin\Debug\Mono.Options.dll
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\bin\Debug\Fylipp.ShortcutSwap.Core.pdb
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\bin\Debug\Costura.pdb
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\bin\Debug\shortcut-swap.exe.exe
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\bin\Debug\shortcut-swap.exe.pdb
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\obj\Debug\shortcut-swap.exe.exe
+C:\Users\Philipp\RiderProjects\shortcut-swap\Fylipp.ShortcutSwap.Main\obj\Debug\shortcut-swap.exe.pdb
